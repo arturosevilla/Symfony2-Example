@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * An order.
  * @ORM\Entity
+ * @ORM\Table(name="ShoppingOrder")
  * 
  * @author arturo
  */
@@ -51,7 +52,7 @@ class Order extends BaseEntity {
     private $status;
 
     /**
-     * @ORM\Column(type="decimal", precision=2, scale=16)
+     * @ORM\Column(type="decimal", precision=16, scale=2)
      *
      * @Assert\NotBlank()
      * @Assert\Type(type="numeric")
@@ -61,7 +62,7 @@ class Order extends BaseEntity {
     private $subtotal;
 
      /**
-     * @ORM\Column(type="decimal", precision=2, scale=16)
+     * @ORM\Column(type="decimal", precision=16, scale=2)
      *
      * @Assert\NotBlank()
      * @Assert\Type(type="numeric")

@@ -43,7 +43,7 @@ class Product extends BaseEntity {
     private $description;
 
     /**
-     * @ORM\Column(type="decimal", precision=2, scale=16)
+     * @ORM\Column(type="decimal", precision=16, scale=2)
      *
      * @Assert\Type(type="numeric")
      * @Assert\Min(limit=0.01)
