@@ -1,7 +1,5 @@
 <?php
 /*
- *  $Id$
- *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -17,27 +15,40 @@
  * This software consists of voluntary contributions made by many individuals
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
- */
+*/
 
-namespace Doctrine\ORM\Query\Expr;
+namespace Doctrine\ORM\Event;
 
 /**
- * Expression class for building DQL OR clauses
+ * Provides event arguments for the onClear event.
  *
- * @license http://www.opensource.org/licenses/lgpl-license.php LGPL
- * @link    www.doctrine-project.org
- * @since   2.0
- * @version $Revision$
- * @author  Guilherme Blanco <guilhermeblanco@hotmail.com>
- * @author  Jonathan Wage <jonwage@gmail.com>
- * @author  Roman Borschel <roman@code-factory.org>
+ * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
+ * @link        www.doctrine-project.com
+ * @since       2.0
+ * @version     $Revision$
+ * @author      Roman Borschel <roman@code-factory.de>
+ * @author      Benjamin Eberlei <kontakt@beberlei.de>
  */
-class Orx extends Composite
+class OnClearEventArgs extends \Doctrine\Common\EventArgs
 {
-    protected $_separator = ' OR ';
-    protected $_allowedClasses = array(
-        'Doctrine\ORM\Query\Expr\Andx',
-        'Doctrine\ORM\Query\Expr\Comparison',
-        'Doctrine\ORM\Query\Expr\Func',
-    );
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $em;
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $em
+     */
+    public function __construct($em)
+    {
+        $this->em = $em;
+    }
+
+    /**
+     * @return \Doctrine\ORM\EntityManager
+     */
+    public function getEntityManager()
+    {
+        return $this->em;
+    }
 }

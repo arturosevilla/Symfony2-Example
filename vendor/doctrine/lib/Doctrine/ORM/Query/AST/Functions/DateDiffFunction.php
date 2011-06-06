@@ -1,7 +1,5 @@
 <?php
 /*
- *  $Id$
- *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -19,25 +17,42 @@
  * <http://www.doctrine-project.org>.
  */
 
-namespace Doctrine\ORM\Query\Expr;
+namespace Doctrine\ORM\Query\AST\Functions;
+
+use Doctrine\ORM\Query\Lexer;
+use Doctrine\ORM\Query\SqlWalker;
+use Doctrine\ORM\Query\Parser;
 
 /**
- * Expression class for building DQL OR clauses
+ * "DATE_DIFF(date1, date2)"
  *
  * @license http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @link    www.doctrine-project.org
  * @since   2.0
- * @version $Revision$
- * @author  Guilherme Blanco <guilhermeblanco@hotmail.com>
- * @author  Jonathan Wage <jonwage@gmail.com>
- * @author  Roman Borschel <roman@code-factory.org>
+ * @author  Benjamin Eberlei <kontakt@beberlei.de>
  */
-class Orx extends Composite
+class DateDiffFunction extends FunctionNode
 {
-    protected $_separator = ' OR ';
-    protected $_allowedClasses = array(
-        'Doctrine\ORM\Query\Expr\Andx',
-        'Doctrine\ORM\Query\Expr\Comparison',
-        'Doctrine\ORM\Query\Expr\Func',
-    );
+    public $date1;
+    public $date2;
+
+    public function getSql(SqlWalker $sqlWalker)
+    {
+        return $sqlWalker->getConnection()->getDatabasePlatform()->getDateDiffExpression(
+            $this->date1->dispatch($sqlWalker),
+            $this->date2->dispatch($sqlWalker)
+        );
+    }
+
+    public function parse(Parser $parser)
+    {
+        $parser->match(Lexer::T_IDENTIFIER);
+        $parser->match(Lexer::T_OPEN_PARENTHESIS);
+
+        $this->date1 = $parser->ArithmeticPrimary();
+        $parser->match(Lexer::T_COMMA);
+        $this->date2 = $parser->ArithmeticPrimary();
+
+        $parser->match(Lexer::T_CLOSE_PARENTHESIS);
+    }
 }
