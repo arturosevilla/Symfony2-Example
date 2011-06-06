@@ -4,6 +4,7 @@ namespace Morzan\TutorialBundle\Entity;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -71,6 +72,20 @@ class User extends BaseEntity implements UserInterface {
      */
     private $address;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Order", mappedBy="user")
+     *
+     * @var Doctrine\Common\Collections\ArrayCollection
+     */
+    private $orders;
+
+    /**
+     * @ORM\OneToMany(targetEntity="ShoppingCartItem", mappedBy="user")
+     *
+     * @var Doctrine\Common\Collections\ArrayCollection
+     */
+    private $cartItems;
+
     public function __construct(string $pFirstName, string $pLastName,
                                 string $pEmail, string $pPassword,
                                 string $pAddress)
@@ -80,11 +95,34 @@ class User extends BaseEntity implements UserInterface {
         $this->lastName = $pLastName;
         $this->email = $pEmail;
         $this->address = $pAddress;
+        $this->orders = new ArrayCollection();
+        $this->cartItems = new ArrayCollection();
     }
 
-    public function getId()
+    public function addItemToShoppingCart(Product $product, $quantity)
     {
-        return $this->id;
+        if ($quantity <= 0) {
+            return;
+        }
+        
+        foreach ($this->cartItems as $item) {
+            if ($item->getProduct()->getId() === $product->getId()) {
+                $item->setQuantity($item->getQuantity() + $quantity);
+                return;
+            }
+        }
+
+        $cartItem = new ShoppingCartItem($this, $product, $quantity);
+
+        $this->cartItems[] = $cartItem;
+    }
+
+    public function buyShoppingCart(string $pTaxPercentage)
+    {
+        $order = new Order($this, $pTaxPercentage, $this->cartItems);
+        $this->orders[] = $order;
+
+        $this->cartItems->clear();
     }
 
     public function getFirstName()

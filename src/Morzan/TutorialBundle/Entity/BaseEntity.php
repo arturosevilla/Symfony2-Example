@@ -19,4 +19,9 @@ class BaseEntity {
         return new \DateTime('now');
     }
 
+    public function getId()
+    {
+        return $this->id;
+    }
+
 }
