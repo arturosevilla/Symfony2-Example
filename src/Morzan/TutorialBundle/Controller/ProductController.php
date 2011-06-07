@@ -11,10 +11,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
  *
  * @author arturo
  */
-class ProductController {
+class ProductController extends Controller {
 
     /**
-     * @Route('/product/view/{id}', name='product_view')
+     * @Route("/product/view/{id}", name="product_view")
      * @Template()
      */
     public function viewAction($id)

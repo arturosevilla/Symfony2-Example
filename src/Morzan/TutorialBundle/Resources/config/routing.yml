@@ -2,3 +2,8 @@ _default:
     resource: "@TutorialBundle/Controller/DefaultController.php"
     type:     annotation
     prefix:   /
+
+_product:
+    resource: "@TutorialBundle/Controller/ProductController.php"
+    type:     annotation
+    prefix:   /
