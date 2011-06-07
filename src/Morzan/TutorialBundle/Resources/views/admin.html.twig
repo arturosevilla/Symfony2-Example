@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Tutorial Admin - {% block title %}Welcome{% endblock %}</title>
+        <link rel="stylesheet" media="all" type="text/css" href="{{ asset('/admin/css/style.css') }}" />
+        {% block stylesheets %}{% endblock %}
+        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+        <div id="menu">
+            <a href="{{ path('product_catalog') }}">Product Catalog</a>
+        </div>
+        {% block body %}{% endblock %}
+    </body>
+</html>
