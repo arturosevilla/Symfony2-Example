@@ -1,5 +1,29 @@
 {% extends 'TutorialBundle::layout.html.twig' %}
 
+{% macro product_showcase(product) %}
+<div class="product-showcase">
+    <div class="product-title">
+        <a class="product-href" href="{{ path('product_view', { 'id': product.id }) }}">{{ product.name }}</a>
+    </div>
+    <div class="product-description">
+        {{ product.description }}
+    </div>
+</div>
+{% endmacro %}
+
 {% block body %}
-Hello!
+
+<div id="divLastViewed" {% if last_viewed is empty %} class="hidden" {% endif %}>
+    {% for product in last_viewed %}
+        {{ _self.product_showcase(product) }}
+    {% endfor %}
+</div>
+
+<div id="divNewProducts" {% if new_products is empty %} class="hidden" {% endif %}>
+    {% for product in new_products %}
+        {{ _self.product_showcase(product) }}
+    {% endfor %}
+</div>
+
+
 {% endblock %}
