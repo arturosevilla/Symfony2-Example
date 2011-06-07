@@ -86,15 +86,15 @@ class User extends BaseEntity implements UserInterface {
      */
     private $cartItems;
 
-    public function __construct(string $pFirstName, string $pLastName,
-                                string $pEmail, string $pPassword,
-                                string $pAddress)
+    public function __construct($psFirstName = null, $psLastName = null,
+                                $psEmail = null, $psPassword = null,
+                                $psAddress = null)
     {
         $this->id = $this->generateID();
-        $this->firstName = $pFirstName;
-        $this->lastName = $pLastName;
-        $this->email = $pEmail;
-        $this->address = $pAddress;
+        $this->firstName = $psFirstName;
+        $this->lastName = $psLastName;
+        $this->email = $psEmail;
+        $this->address = $psAddress;
         $this->orders = new ArrayCollection();
         $this->cartItems = new ArrayCollection();
     }
@@ -117,9 +117,9 @@ class User extends BaseEntity implements UserInterface {
         $this->cartItems[] = $cartItem;
     }
 
-    public function buyShoppingCart(string $pTaxPercentage)
+    public function buyShoppingCart($psTaxPercentage)
     {
-        $order = new Order($this, $pTaxPercentage, $this->cartItems);
+        $order = new Order($this, $psTaxPercentage, $this->cartItems);
         $this->orders[] = $order;
 
         $this->cartItems->clear();
@@ -130,9 +130,9 @@ class User extends BaseEntity implements UserInterface {
         return $this->firstName;
     }
 
-    public function setFirstName(string $pFirstName)
+    public function setFirstName($psFirstName)
     {
-        if ($pFirstName === NULL) {
+        if ($psFirstName === NULL) {
             throw new \InvalidArgumentException('pFirstName must not be null');
         }
         
@@ -144,13 +144,13 @@ class User extends BaseEntity implements UserInterface {
         return $this->lastName;
     }
 
-    public function setLastName(string $pLastName)
+    public function setLastName($psLastName)
     {
-        if ($pLastName === NULL) {
+        if ($psLastName === NULL) {
             throw new \InvalidArgumentException('pLastName must not be null');
         }
 
-        $this->lastName = $pLastName;
+        $this->lastName = $psLastName;
     }
 
     public function getEmail()
@@ -158,9 +158,9 @@ class User extends BaseEntity implements UserInterface {
         return $this->email;
     }
 
-    public function setEmail(string $pEmail)
+    public function setEmail($psEmail)
     {
-        $this->email = $pEmail;
+        $this->email = $psEmail;
     }
 
     public function getAddress()
@@ -168,9 +168,9 @@ class User extends BaseEntity implements UserInterface {
         return $this->address;
     }
 
-    public function setAddress(string $pAddress)
+    public function setAddress($psAddress)
     {
-        $this->address = $pAddress;
+        $this->address = $psAddress;
     }
 
     public function equals(UserInterface $user)
@@ -206,9 +206,9 @@ class User extends BaseEntity implements UserInterface {
         return $this->password;
     }
 
-    public function setPassword(string $pPassword)
+    public function setPassword($psPassword)
     {
-        $this->password = $pPassword;
+        $this->password = $psPassword;
     }
 
 }

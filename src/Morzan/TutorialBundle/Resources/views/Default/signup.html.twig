@@ -1,0 +1,39 @@
+{% extends 'TutorialBundle::layout.html.twig' %}
+
+{% block body %}
+<form action="{{ path('signup') }}" method="post">
+    <div id="signup">
+        <div class="row">
+            {{ form_label(form.firstName, 'First Name') }}:
+            {{ form_widget(form.firstName) }}
+            {{ form_errors(form.firstName) }}
+        </div>
+        <div class="row">
+            {{ form_label(form.lastName, 'Last Name') }}:
+            {{ form_widget(form.lastName) }}
+            {{ form_errors(form.lastName) }}
+        </div>
+        <div class="row">
+            {{ form_label(form.email, 'Email') }}:
+            {{ form_widget(form.email) }}
+            {{ form_errors(form.email) }}
+        </div>
+
+        {% for input in form.password %}
+        <div class="row">
+            {{ form_label(input) }}:
+            {{ form_widget(input) }}
+        </div>
+        {% endfor %}
+        {{ form_errors(form.password) }}
+        
+        <div class="row">
+            {{ form_label(form.address, 'Address') }}
+            {{ form_widget(form.address) }}
+            {{ form_errors(form.address) }}
+        </div>
+        {{ form_rest(form) }}
+        <input type="submit" value="Signup!" />
+    </div>
+</form>
+{% endblock %}

@@ -2,16 +2,20 @@
 
 namespace Morzan\TutorialBundle\Controller;
 
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Cookie;
+use Morzan\TutorialBundle\Entity\User;
 
 class DefaultController extends Controller
 {
 
     const SHOWCASE_LIMIT = 5;
     const LASTVIEWED_EXPIRE_TIME = 63072000; //2 years
+    const PROVIDER_KEY = 'main';
 
     /**
      * @Route("/", name="homepage")
@@ -47,5 +51,81 @@ class DefaultController extends Controller
         }
 
         return array('new_products' => $new_products, 'last_viewed' => $last_viewed);
+    }
+
+    /**
+     * @Route("/login", name="_login")
+     * @Template()
+     */
+    public function loginAction()
+    {
+        if ($this->get('request')->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
+            $error = $this->get('request')->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
+        } else {
+            $error = $this->get('request')->getSession()->get(SecurityContext::AUTHENTICATION_ERROR);
+        }
+
+        return array(
+            'last_username' => $this->get('request')->getSession()->get(SecurityContext::LAST_USERNAME),
+            'error'         => $error,
+        );
+    }
+
+    /**
+     * @Route("/login_check", name="_security_check")
+     */
+    public function securityCheckAction()
+    {
+        // The security layer will intercept this request
+    }
+
+    /**
+     * @Route("/logout", name="_logout")
+     */
+    public function logoutAction()
+    {
+        // The security layer will intercept this request
+    }
+
+    /**
+     * @Route("/signup", name="signup")
+     * @Template()
+     */
+    public function signupAction()
+    {
+        $user = new User();
+
+        $form = $this->get('form.factory')->createBuilder('form', $user)
+            ->add('firstName', 'text')
+            ->add('lastName', 'text')
+            ->add('email', 'email')
+            ->add('password', 'repeated', array('type' => 'password', 'first_name' => 'password',
+                                                'second_name' => 'confirm_password'))
+            ->add('address', 'text')
+            ->getForm();
+        $request = $this->get('request');
+
+        if ($request->getMethod() == 'POST') {
+
+            $form->bindRequest($request);
+            if ($form->isValid()) {
+                $em = $this->get('doctrine')->getEntityManager();
+                $em->persist($user);
+                $em->flush();
+
+                $this->authenticate($user);
+
+                $this->redirect($this->generateUrl('homeuser'));
+            }
+        }
+
+        return array('form' => $form->createView());
+    }
+
+    private function authenticate(UserInterface $user)
+    {
+        $token = new UsernamePasswordToken($user, null, self::PROVIDER_KEY, $user->getRoles());
+
+        $this->get('security.context')->setToken($token);
     }
 }
