@@ -70,6 +70,12 @@ class Product extends BaseEntity {
      */
     private $reviews;
 
+    /**
+     * @ORM\Column(type="datetime")
+     *
+     */
+    private $dateOfCreation;
+
     public function __construct(string $pName, string $pDescription,
                                 string $pCost, $pfRating = NULL)
     {
@@ -79,6 +85,7 @@ class Product extends BaseEntity {
         $this->cost = $pCost;
         $this->rating = $pfRating;
         $this->reviews = new ArrayCollection();
+        $this->dateOfCreation = $this->now();
     }
 
     public function addReview(ProductReview $review)
@@ -94,6 +101,11 @@ class Product extends BaseEntity {
         $this->rating = $new_rating;
 
         $this->reviews[] = $review;
+    }
+
+    public function getDateOfCreation()
+    {
+        return $this->dateOfCreation;
     }
 
     public function getName()
