@@ -15,16 +15,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Product extends BaseEntity {
 
     /**
-     * @ORM\Id
-     * @ORM\Column(type="string")
-     *
-     * @Assert\NotBlank()
-     *
-     * @var string
-     */
-    private $id;
-
-    /**
      * @ORM\Column(type="string")
      *
      * @Assert\NotBlank()
@@ -79,7 +69,8 @@ class Product extends BaseEntity {
     public function __construct(string $pName, string $pDescription,
                                 string $pCost, $pfRating = NULL)
     {
-        $this->id = $this->generateID();
+        parent::__construct();
+        
         $this->name = $pName;
         $this->description = $pDescription;
         $this->cost = $pCost;

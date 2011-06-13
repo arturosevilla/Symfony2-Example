@@ -1,0 +1,9 @@
+{% extends 'TutorialBundle::layout.html.twig' %}
+
+{% block body %}
+
+Hello, {{ user.firstName }} {{ user.lastName }}
+
+<a href="{{ path('_logout') }}">Logout</a>
+
+{% endblock %}

@@ -4,6 +4,7 @@ namespace Morzan\TutorialBundle\Controller;
 
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\SecurityContext;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -15,7 +16,7 @@ class DefaultController extends Controller
 
     const SHOWCASE_LIMIT = 5;
     const LASTVIEWED_EXPIRE_TIME = 63072000; //2 years
-    const PROVIDER_KEY = 'main';
+    const PROVIDER_KEY = 'user_area';
 
     /**
      * @Route("/", name="homepage")
@@ -72,22 +73,6 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/login_check", name="_security_check")
-     */
-    public function securityCheckAction()
-    {
-        // The security layer will intercept this request
-    }
-
-    /**
-     * @Route("/logout", name="_logout")
-     */
-    public function logoutAction()
-    {
-        // The security layer will intercept this request
-    }
-
-    /**
      * @Route("/signup", name="signup")
      * @Template()
      */
@@ -109,13 +94,20 @@ class DefaultController extends Controller
 
             $form->bindRequest($request);
             if ($form->isValid()) {
+                // encode the password
+                $encoder_factory = $this->get('security.encoder_factory');
+                $encoder = $encoder_factory->getEncoder($user);
+                $password_encoded = $encoder->encodePassword($user->getPassword(), $user->getSalt());
+                $user->setPassword($password_encoded);
+
+                // persist the user
                 $em = $this->get('doctrine')->getEntityManager();
                 $em->persist($user);
                 $em->flush();
 
                 $this->authenticate($user);
 
-                $this->redirect($this->generateUrl('homeuser'));
+                return $this->redirect($this->generateUrl('homeuser'));
             }
         }
 

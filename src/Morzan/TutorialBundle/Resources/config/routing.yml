@@ -6,7 +6,12 @@ _default:
 _product:
     resource: "@TutorialBundle/Controller/ProductController.php"
     type:     annotation
-    prefix:   /
+    prefix:   /product
+
+_user:
+    resource: "@TutorialBundle/Controller/UserController.php"
+    type:     annotation
+    prefix:   /user
 
 _admin:
     resource: "@TutorialBundle/Controller/AdminController.php"

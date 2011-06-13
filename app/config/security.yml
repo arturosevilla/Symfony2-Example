@@ -1,41 +1,55 @@
 security:
     encoders:
-        Symfony\Component\Security\Core\User\User: plaintext
+        Symfony\Component\Security\Core\User\UserInterface: sha512
 
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER
         ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     providers:
-        in_memory:
-            users:
-                user:  { password: userpass, roles: [ 'ROLE_USER' ] }
-                admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
-
+        main:
+            entity:
+                class:    Morzan\TutorialBundle\Entity\User
+                property: email
+        admin:
+            entity:
+                class:    Morzan\TutorialBundle\Entity\AdminUser
+                property: username
+                
     firewalls:
-        profiler:
-            pattern:  ^/_profiler
-            security: false
+#        profiler:
+#            pattern:  ^/_profiler
+#            security: false
+#
+#        wdt:
+#            pattern:  ^/_wdt
+#            security: false
+#
+#        login:
+#            pattern:  ^/demo/secured/login$
+#            security: false
+        admin_area:
+            pattern: ^/admin
+            provider: admin
+            http_basic:
+                realm: "Administrator Area"
+            stateless: true
 
-        wdt:
-            pattern:  ^/_wdt
-            security: false
-
-        login:
-            pattern:  ^/demo/secured/login$
-            security: false
-
-        secured_area:
-            pattern:    ^/demo/secured/
+        user_area:
+            pattern:    .*
+            provider: main
             form_login:
-                check_path: /demo/secured/login_check
-                login_path: /demo/secured/login
+                check_path: /user/login_check
+                login_path: /login
             logout:
-                path:   /demo/secured/logout
-                target: /demo/
-            #anonymous: ~
+                path:   /user/logout
+                target: /
+            anonymous: ~
             #http_basic:
             #    realm: "Secured Demo Area"
 
     access_control:
-        #- { path: /login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+        - { path: /admin.*, roles: ROLE_ADMIN }
+        - { path: /user.*, roles: ROLE_USER }
+        - { path: /.*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        

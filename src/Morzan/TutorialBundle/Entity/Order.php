@@ -16,14 +16,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Order extends BaseEntity {
 
     /**
-     * @ORM\Id
-     * @ORM\Column(type="string")
-     * 
-     * @var string
-     */
-    private $id;
-
-    /**
      * @ORM\Column(type="datetime")
      *
      * @Assert\NotBlank()
@@ -81,7 +73,8 @@ class Order extends BaseEntity {
 
     public function __construct(User $pUser, string $pTaxPercentage, $paItems)
     {
-        $this->id = $this->generateID();
+        parent::__construct();
+        
         $this->dateOfPurchase = $this->now();
         $this->user = $pUser;
         $this->status = 'processed';

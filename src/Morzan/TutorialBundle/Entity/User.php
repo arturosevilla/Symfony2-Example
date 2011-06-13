@@ -14,54 +14,16 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @author arturo
  */
-class User extends BaseEntity implements UserInterface {
+class User extends BaseUser {
 
     /**
-     * @ORM\Id
-     * @ORM\Column(type="string")
-     *
-     * @Assert\NotBlank()
-     *
-     * @var string
-     */
-    private $id;
-
-    /**
-     * @ORM\Column(type="string")
-     *
-     * @Assert\NotBlank()
-     *
-     * @var string
-     */
-    private $firstName;
-
-    /**
-     * @ORM\Column(type="string")
-     *
-     * @Assert\NotBlank()
-     *
-     * @var string
-     */
-    private $lastName;
-
-    /**
-     * @ORM\Column(type="string")
-     *
+     * @ORM\Column(type="string", unique=true)
      * @Assert\NotBlank()
      * @Assert\Email()
      *
      * @var string
      */
     private $email;
-
-    /**
-     * @ORM\Column(type="string")
-     *
-     * @Assert\NotBlank()
-     *
-     * @var string
-     */
-    private $password;
 
     /**
      * @ORM\Column(type="string")
@@ -90,9 +52,8 @@ class User extends BaseEntity implements UserInterface {
                                 $psEmail = null, $psPassword = null,
                                 $psAddress = null)
     {
-        $this->id = $this->generateID();
-        $this->firstName = $psFirstName;
-        $this->lastName = $psLastName;
+        parent::__construct($psFirstName, $psLastName, $psPassword);
+        
         $this->email = $psEmail;
         $this->address = $psAddress;
         $this->orders = new ArrayCollection();
@@ -125,34 +86,6 @@ class User extends BaseEntity implements UserInterface {
         $this->cartItems->clear();
     }
 
-    public function getFirstName()
-    {
-        return $this->firstName;
-    }
-
-    public function setFirstName($psFirstName)
-    {
-        if ($psFirstName === NULL) {
-            throw new \InvalidArgumentException('pFirstName must not be null');
-        }
-        
-        $this->firstName = $psFirstName;
-    }
-
-    public function getLastName()
-    {
-        return $this->lastName;
-    }
-
-    public function setLastName($psLastName)
-    {
-        if ($psLastName === NULL) {
-            throw new \InvalidArgumentException('pLastName must not be null');
-        }
-
-        $this->lastName = $psLastName;
-    }
-
     public function getEmail()
     {
         return $this->email;
@@ -173,42 +106,24 @@ class User extends BaseEntity implements UserInterface {
         $this->address = $psAddress;
     }
 
-    public function equals(UserInterface $user)
+    public function getOrders()
     {
-        if (!($user instanceof User)) {
-            return false;
-        }
+        return $this->orders;
+    }
 
-        return $this->id === $user->id;
+    public function getShoppingCart()
+    {
+        return $this->cartItems;
     }
 
     public function getRoles()
     {
-        return array();
-    }
-
-    public function getSalt()
-    {
-        return '';
+        return array('ROLE_USER');
     }
 
     public function getUsername()
     {
         return $this->email;
-    }
-
-    public function eraseCredentials()
-    {
-    }
-
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    public function setPassword($psPassword)
-    {
-        $this->password = $psPassword;
     }
 
 }

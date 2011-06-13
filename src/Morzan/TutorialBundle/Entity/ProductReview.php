@@ -15,17 +15,6 @@ use Doctrine\ORM\Mapping as ORM;
 class ProductReview extends BaseEntity {
 
     /**
-     *
-     * @ORM\Id
-     * @ORM\Column(type="string")
-     *
-     * @Assert\NotBlank()
-     *
-     * @var string
-     */
-    private $id;
-    
-    /**
      * @ORM\ManyToOne(targetEntity="Product", inversedBy="reviews")
      * 
      * @Assert\NotBlank()
@@ -68,7 +57,7 @@ class ProductReview extends BaseEntity {
     public function __construct(Product $pProduct, User $pAuthor, int $pRating,
                                 string $pReview)
     {
-        $this->id = $this->generateID();
+        parent::__construct();
         $this->product = $pProduct;
         $this->author = $pAuthor;
         $this->rating = $pRating;
