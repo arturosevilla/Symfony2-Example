@@ -6,6 +6,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Morzan\TutorialBundle\Validator as MyAssert;
 
 /**
  * The user class
@@ -18,8 +19,10 @@ class User extends BaseUser {
 
     /**
      * @ORM\Column(type="string", unique=true)
+     * 
      * @Assert\NotBlank()
      * @Assert\Email()
+     * @MyAssert\UniqueUsername(property="email", class="TutorialBundle:User")
      *
      * @var string
      */

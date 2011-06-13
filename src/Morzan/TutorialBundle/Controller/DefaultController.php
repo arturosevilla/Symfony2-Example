@@ -71,6 +71,19 @@ class DefaultController extends Controller
             'error'         => $error,
         );
     }
+    /**
+     * @Route("/verify/{username}", name="verify_username", requirements={"_method"="POST" }, defaults={"_format"="json"})
+     *
+     */
+    public function verifyUsername($username)
+    {
+        $em = $this->get('doctrine')->getEntityManager();
+        $query = $em->createQuery('SELECT COUNT(u.id) FROM TutorialBundle:User u WHERE email = :email');
+        $query->setParameter('email', $username);
+        $count = $query->getSingleScalarResult();
+
+        return $count === 0 ? 'true' : 'false';
+    }
 
     /**
      * @Route("/signup", name="signup")
