@@ -71,7 +71,7 @@ class Order extends BaseEntity {
 
     private $items;
 
-    public function __construct(User $pUser, string $pTaxPercentage, $paItems)
+    public function __construct(User $pUser, $psTaxPercentage, $paItems)
     {
         parent::__construct();
         
@@ -171,9 +171,9 @@ class Order extends BaseEntity {
         return $this->taxPercentage;
     }
 
-    public function setTaxPercentage(string $pTaxPercentage)
+    public function setTaxPercentage($psTaxPercentage)
     {
-        $this->taxPercentage = $pTaxPercentage;
+        $this->taxPercentage = $psTaxPercentage;
     }
 
     public function getTax()

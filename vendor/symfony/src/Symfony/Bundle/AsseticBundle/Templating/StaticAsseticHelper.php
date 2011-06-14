@@ -13,7 +13,7 @@ namespace Symfony\Bundle\AsseticBundle\Templating;
 
 use Assetic\Asset\AssetInterface;
 use Assetic\Factory\AssetFactory;
-use Symfony\Component\Templating\Helper\AssetsHelper;
+use Symfony\Component\Templating\Helper\CoreAssetsHelper;
 
 /**
  * The static "assetic" templating helper.
@@ -30,7 +30,7 @@ class StaticAsseticHelper extends AsseticHelper
      * @param AssetsHelper $assetsHelper The assets helper
      * @param AssetFactory $factory      The asset factory
      */
-    public function __construct(AssetsHelper $assetsHelper, AssetFactory $factory)
+    public function __construct(CoreAssetsHelper $assetsHelper, AssetFactory $factory)
     {
         $this->assetsHelper = $assetsHelper;
 

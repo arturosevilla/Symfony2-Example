@@ -45,11 +45,11 @@ class ShoppingCartItem {
      */
     private $quantity;
 
-    public function __construct(User $pUser, Product $pProduct, int $pQuantity)
+    public function __construct(User $pUser, Product $pProduct, $piQuantity)
     {
         $this->user = $pUser;
         $this->product = $pProduct;
-        $this->quantity = $pQuantity;
+        $this->quantity = $piQuantity;
     }
 
     public function getUser()
@@ -77,9 +77,9 @@ class ShoppingCartItem {
         return $this->quantity;
     }
 
-    public function setQuantity(int $pQuantity)
+    public function setQuantity($piQuantity)
     {
-        $this->quantity = $pQuantity;
+        $this->quantity = $piQuantity;
     }
 
 }

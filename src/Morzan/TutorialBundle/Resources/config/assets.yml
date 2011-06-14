@@ -1,0 +1,10 @@
+assetic:
+    assets:
+        app_js:
+            inputs:
+                - "@TutorialBundle/Resources/js/jquery.js"
+
+        app_style:
+            inputs:
+                - "@TutorialBundle/Resources/scss/style.scss"
+            filters: scss

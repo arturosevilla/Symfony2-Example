@@ -54,14 +54,14 @@ class ProductReview extends BaseEntity {
      */
     private $review;
 
-    public function __construct(Product $pProduct, User $pAuthor, int $pRating,
-                                string $pReview)
+    public function __construct(Product $pProduct, User $pAuthor, $piRating,
+                                $psReview)
     {
         parent::__construct();
         $this->product = $pProduct;
         $this->author = $pAuthor;
-        $this->rating = $pRating;
-        $this->review = $pReview;
+        $this->rating = $piRating;
+        $this->review = $psReview;
     }
 
     public function getProduct()
@@ -89,9 +89,9 @@ class ProductReview extends BaseEntity {
         return $this->rating;
     }
 
-    public function setRating(int $pRating)
+    public function setRating($piRating)
     {
-        $this->rating = $pRating;
+        $this->rating = $piRating;
     }
 
     public function getReview()
@@ -99,9 +99,9 @@ class ProductReview extends BaseEntity {
         return $this->author;
     }
 
-    public function setReview(string $pReview)
+    public function setReview($psReview)
     {
-        $this->review = $pReview;
+        $this->review = $psReview;
     }
 
 }

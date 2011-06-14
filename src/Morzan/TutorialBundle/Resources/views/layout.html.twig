@@ -4,3 +4,24 @@
 
 
 {% endblock %}
+
+{% block js %}
+
+    
+    {% javascripts '@app_js' filter='?closure' output='js/output.js' %}
+
+        <script src="{{ asset_url }}"></script>
+
+    {% endjavascripts %}
+
+{% endblock %}
+
+{% block stylesheets %}
+
+    {% stylesheets '@app_style' filter='?yui_css' output='css/style.css' %}
+
+        <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen" />
+
+    {% endstylesheets %}
+
+{% endblock %}

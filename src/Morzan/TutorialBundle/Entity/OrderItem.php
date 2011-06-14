@@ -44,11 +44,11 @@ class OrderItem {
      */
     private $quantity;
 
-    public function __construct(Order $pOrder, Product $pProduct, int $pQuantity)
+    public function __construct(Order $pOrder, Product $pProduct, $piQuantity)
     {
         $this->order = $pOrder;
         $this->product = $pProduct;
-        $this->quantity = $pQuantity;
+        $this->quantity = $piQuantity;
     }
 
     public function getOrder()
@@ -76,9 +76,9 @@ class OrderItem {
         return $this->quantity;
     }
 
-    public function setQuantity(int $pQuantity)
+    public function setQuantity($piQuantity)
     {
-        $this->quantity = $pQuantity;
+        $this->quantity = $piQuantity;
     }
 
 }

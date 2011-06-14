@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.ini }
     - { resource: security.yml }
     - { resource: "@TutorialBundle/Resources/config/validators.yml" }
+    - { resource: "@TutorialBundle/Resources/config/assets.yml" }
 
 framework:
     secret:          %secret%
@@ -24,9 +25,11 @@ twig:
 # Assetic Configuration
 assetic:
     debug:          %kernel.debug%
-    use_controller: true
+    use_controller: false
     filters:
         cssrewrite: ~
+        scss:
+            apply_to: "\.scss$"
         closure:
             jar: %kernel.root_dir%/Resources/java/closure.jar
         yui_css:

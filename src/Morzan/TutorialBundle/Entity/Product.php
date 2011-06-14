@@ -66,8 +66,8 @@ class Product extends BaseEntity {
      */
     private $dateOfCreation;
 
-    public function __construct(string $pName, string $pDescription,
-                                string $pCost, $pfRating = NULL)
+    public function __construct($psName, $psDescription,
+                                $psCost, $pfRating = NULL)
     {
         parent::__construct();
         
@@ -104,9 +104,9 @@ class Product extends BaseEntity {
         return $this->name;
     }
 
-    public function setName(string $pName)
+    public function setName($psName)
     {
-        $this->name = $pName;
+        $this->name = $psName;
     }
 
     public function getDescription()
@@ -114,9 +114,9 @@ class Product extends BaseEntity {
         return $this->description;
     }
 
-    public function setDescription(string $pDescription)
+    public function setDescription($psDescription)
     {
-        $this->description = $pDescription;
+        $this->description = $psDescription;
     }
 
     public function getCost()
@@ -124,9 +124,9 @@ class Product extends BaseEntity {
         return $this->cost;
     }
 
-    public function setCost(string $pCost)
+    public function setCost($psCost)
     {
-        $this->cost = $pCost;
+        $this->cost = $psCost;
     }
 
     public function getRating()
