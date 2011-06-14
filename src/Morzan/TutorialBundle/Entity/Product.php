@@ -81,8 +81,12 @@ class Product extends BaseEntity {
 
     public function addReview(ProductReview $review)
     {
-        if ($review->getProduct()->id !== $this->id) {
+        if ($review->getProduct()->getId() !== $this->getId()) {
             return;
+        }
+
+        if ($this->rating === null) {
+            $this->rating = 0.0;
         }
 
         /* update the rating */
