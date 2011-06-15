@@ -1,0 +1,18 @@
+
+[
+{% autoescape false %}
+{% for product in products %}
+    {
+        "id": {{ product.id | json_encode}},
+        "name": {{ product.name | json_encode }},
+        "description": {{ product.description | json_encode }},
+        "cost": {{ product.cost | json_encode }},
+        "dateOfCreation": {{ product.dateOfCreation | date("m/d/Y") | json_encode }}
+    }
+    {%- if not loop.last -%}
+        ,
+    {%- endif -%}
+{% endfor %}
+{% endautoescape %}
+
+]

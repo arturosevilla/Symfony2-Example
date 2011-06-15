@@ -9,7 +9,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\Response;
+use Morzan\TutorialBundle\Entity\BaseUser;
 use Morzan\TutorialBundle\Entity\User;
+use Morzan\TutorialBundle\Entity\AdminUser;
 
 class DefaultController extends Controller
 {
@@ -55,6 +58,23 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/install_admin", name="install_admin")
+     */
+    public function installAction()
+    {
+        $user = new AdminUser('Admin', 'User', 'test1234');
+        $user->setUsername('admin');
+
+        $this->encodePassword($user);
+
+        $em = $this->get('doctrine')->getEntityManager();
+        $em->persist($user);
+        $em->flush();
+
+        return new Response('success');
+    }
+
+    /**
      * @Route("/login", name="_login")
      * @Template()
      */
@@ -82,7 +102,7 @@ class DefaultController extends Controller
         $query->setParameter('email', $username);
         $count = $query->getSingleScalarResult();
 
-        return $count === 0 ? 'true' : 'false';
+        return new Response($count === 0 ? 'true' : 'false');
     }
 
     /**
@@ -107,11 +127,8 @@ class DefaultController extends Controller
 
             $form->bindRequest($request);
             if ($form->isValid()) {
-                // encode the password
-                $encoder_factory = $this->get('security.encoder_factory');
-                $encoder = $encoder_factory->getEncoder($user);
-                $password_encoded = $encoder->encodePassword($user->getPassword(), $user->getSalt());
-                $user->setPassword($password_encoded);
+
+                $this->encodePassword($user);
 
                 // persist the user
                 $em = $this->get('doctrine')->getEntityManager();
@@ -125,6 +142,14 @@ class DefaultController extends Controller
         }
 
         return array('form' => $form->createView());
+    }
+
+    private function encodePassword(BaseUser $user)
+    {
+        $encoder_factory = $this->get('security.encoder_factory');
+        $encoder = $encoder_factory->getEncoder($user);
+        $password_encoded = $encoder->encodePassword($user->getPassword(), $user->getSalt());
+        $user->setPassword($password_encoded);
     }
 
     private function authenticate(UserInterface $user)

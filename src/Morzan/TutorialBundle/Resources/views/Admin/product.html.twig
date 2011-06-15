@@ -1,1 +1,57 @@
-{# empty Twig template #}
+{% extends 'TutorialBundle::admin.html.twig' %}
+
+{% block stylesheets %}
+
+    {% stylesheets '@app_style' filter='?yui_css' output='css/style.css' %}
+
+        <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen" />
+
+    {% endstylesheets %}
+
+{% endblock %}
+
+
+{% block body %}
+
+        <table id="productCRUD">
+
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Cost</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+            <tfoot>
+            </tfoot>
+
+        </table>
+
+        <a href="{{ path('product_edit') }}">New product</a>
+
+
+    {% javascripts '@admin_js' filter='?closure' output='js/admin.js' %}
+
+        <script src="{{ asset_url }}"></script>
+
+    {% endjavascripts %}
+    <script type="text/javascript">
+
+        $(function() {
+            var productManager = new ProductCRUD(
+                'productCRUD',
+                {{ total }},
+                '{{ path('product_paginator', { 'offset': '_offset_', 'count': '_count_'}) | raw }}',
+                '{{ path('product_edit', { 'id': '_id_' }) | raw }}'
+            );
+
+            productManager.getData();
+        });
+
+    </script>
+
+{% endblock %}

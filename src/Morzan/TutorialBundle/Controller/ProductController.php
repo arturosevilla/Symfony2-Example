@@ -29,4 +29,13 @@ class ProductController extends Controller {
         return array('product' => $product);
     }
 
+    /**
+     * @Route("/product/shop/{id}", name="product_shopping_cart")
+     * @Template()
+     */
+    public function shopAction($id)
+    {
+        $em = $this->get('doctrine')->getEntityManager();
+    }
+
 }

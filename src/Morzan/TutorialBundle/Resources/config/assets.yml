@@ -3,7 +3,10 @@ assetic:
         app_js:
             inputs:
                 - "@TutorialBundle/Resources/js/jquery.js"
-
+        admin_js:
+            inputs:
+                - "@app_js"
+                - "@TutorialBundle/Resources/js/admin/product.js"
         app_style:
             inputs:
                 - "@TutorialBundle/Resources/scss/style.scss"

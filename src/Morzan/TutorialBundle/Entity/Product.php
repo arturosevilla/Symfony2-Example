@@ -66,14 +66,14 @@ class Product extends BaseEntity {
      */
     private $dateOfCreation;
 
-    public function __construct($psName, $psDescription,
-                                $psCost, $pfRating = NULL)
+    public function __construct($psName = null, $psDescription = null,
+                                $psCost = null, $pfRating = null)
     {
         parent::__construct();
         
-        $this->name = $pName;
-        $this->description = $pDescription;
-        $this->cost = $pCost;
+        $this->name = $psName;
+        $this->description = $psDescription;
+        $this->cost = $psCost;
         $this->rating = $pfRating;
         $this->reviews = new ArrayCollection();
         $this->dateOfCreation = $this->now();

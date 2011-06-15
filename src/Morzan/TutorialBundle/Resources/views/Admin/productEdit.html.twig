@@ -1,0 +1,31 @@
+{% extends 'TutorialBundle::admin.html.twig' %}
+
+{% block body %}
+
+<form action="{{ path('product_edit', { 'id': id }) }}" method="post">
+
+    <div class="row">
+            {{ form_label(form.name, 'Product Name') }}:
+            {{ form_widget(form.name) }}
+            {{ form_errors(form.name) }}
+    </div>
+    <div class="row">
+            {{ form_label(form.description, 'Description') }}:
+            {{ form_widget(form.description) }}
+            {{ form_errors(form.description) }}
+    </div>
+    <div class="row">
+            {{ form_label(form.cost, 'Cost') }}:
+            {{ form_widget(form.cost) }}
+            {{ form_errors(form.cost) }}
+    </div>
+    {{ form_rest(form) }}
+    
+    {% if id is empty %}
+        <input type="submit" value="Create" />
+    {% else %}
+        <input type="submit" value="Save" />
+    {% endif %}
+</form>
+
+{% endblock %}
