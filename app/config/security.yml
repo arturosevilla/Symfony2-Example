@@ -31,6 +31,9 @@ security:
         admin_area:
             pattern: ^/admin
             provider: admin
+            logout:
+                path:   /admin/logout
+                target: /
             http_basic:
                 realm: "Administrator Area"
             stateless: true

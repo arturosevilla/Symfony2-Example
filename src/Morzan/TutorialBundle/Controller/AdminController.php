@@ -24,6 +24,14 @@ class AdminController extends Controller {
         return array();
     }
 
+     /**
+     * @Route("/logout", name="admin_logout")
+     */
+    public function logoutAction()
+    {
+        // The security layer will intercept this request
+    }
+
     /**
      * @Route("/product/", name="product_catalog")
      * @Template()
