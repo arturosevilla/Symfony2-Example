@@ -1,0 +1,26 @@
+parameters:
+    tutorial.lastviewed.class: Morzan\TutorialBundle\Util\LastViewedManager
+    tutorial.cookie_variation_registry.class: Morzan\TutorialBundle\Util\CookieVariationRegistry
+    tutorial.lastviewed.limit: 5
+    tutorial.lastviewed.cookie.name: lastViewed
+    # 2 years
+    tutorial.lastviewed.cookie.expiretime: 63072000
+
+services:
+    tutorial.lastviewed:
+        class: %tutorial.lastviewed.class%
+        scope: request
+        calls:
+            - [setEntityManager, [ "@doctrine" ]]
+            - [setRequest, [ "@request" ]]
+            - [setCookieRegistry, [ "@tutorial.cookie_variation_registry" ]]
+        arguments:
+            - %tutorial.lastviewed.limit%
+            - %tutorial.lastviewed.cookie.name%
+            - %tutorial.lastviewed.cookie.expiretime%
+
+    tutorial.cookie_variation_registry:
+        class: %tutorial.cookie_variation_registry.class%
+        public: false
+        arguments: ["@event_dispatcher"]
+

@@ -1,7 +1,6 @@
 imports:
     - { resource: parameters.ini }
     - { resource: security.yml }
-    - { resource: "@TutorialBundle/Resources/config/validators.yml" }
     - { resource: "@TutorialBundle/Resources/config/assets.yml" }
 
 framework:
@@ -58,3 +57,5 @@ swiftmailer:
 jms_security_extra:
     secure_controllers:  true
     secure_all_services: false
+
+tutorial: ~

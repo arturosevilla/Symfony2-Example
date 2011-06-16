@@ -14,7 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class ProductController extends Controller {
 
     /**
-     * @Route("/product/view/{id}", name="product_view")
+     * @Route("/view/{id}", name="product_view")
      * @Template()
      */
     public function viewAction($id)
@@ -26,11 +26,13 @@ class ProductController extends Controller {
             return $this->redirect($this->generateUrl('homepage'));
         }
 
+        $this->get('tutorial.lastviewed')->registerLastViewed($product);
+
         return array('product' => $product);
     }
 
     /**
-     * @Route("/product/shop/{id}", name="product_shopping_cart")
+     * @Route("/shop/{id}", name="product_shopping_cart")
      * @Template()
      */
     public function shopAction($id)
