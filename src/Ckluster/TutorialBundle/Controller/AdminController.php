@@ -51,13 +51,19 @@ class AdminController extends Controller {
     public function orderNextStageAction($id)
     {
         $em = $this->get('doctrine')->getEntityManager();
+        $logger = $this->get('logger');
+        
         $order = $em->find('TutorialBundle:Order', $id);
         if ($order === null) {
             return new Response('');
         }
 
+        $current_status = $order->getStatus();
+        $userid = $this->get('security.context')->getToken()->getUser()->getId();
         $order->setNextStageInDelivery();
         $status = $order->getStatus();
+
+        $logger->err(\sprintf('Admin user with id %s changed the order status with id %s from %s to %s', $userid, $id, $current_status, $status));
 
         $em->flush();
 
@@ -79,8 +85,12 @@ class AdminController extends Controller {
         $status = $order->getStatus();
 
         if ($status != 'delivered') {
+            $current_status = $order->getStatus();
+            $userid = $this->get('security.context')->getToken()->getUser()->getId();
             $order->setErrorInDelivery();
             $status = $order->getStatus();
+
+            $logger->err(\sprintf('Admin user with id %s changed the order status with id %s from %s to %s', $userid, $id, $current_status, $status));
 
             $em->flush();
         }
@@ -124,6 +134,7 @@ class AdminController extends Controller {
      */
     public function productEditAction($id)
     {
+        $logger = $this->get('logger');
         if ($id !== '') {
             $em = $this->get('doctrine')->getEntityManager();
 
@@ -145,11 +156,13 @@ class AdminController extends Controller {
             $form->bindRequest($request);
             
             if ($form->isValid()) {
-
                 if ($id === '') {
                     $em = $this->get('doctrine')->getEntityManager();
                     $em->persist($product);
                 }
+
+                $userid = $this->get('security.context')->getToken()->getUser()->getId();
+                $logger->err(\sprintf('Admin user with id %s %s product %s', $userid, $id === ''? 'created' : 'edited', $product->getId()));
 
                 $em->flush();
                 return $this->redirect($this->generateUrl('product_catalog'));
