@@ -5,6 +5,7 @@ namespace Morzan\TutorialBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use Morzan\TutorialBundle\Entity\Product;
 
 
@@ -30,6 +31,61 @@ class AdminController extends Controller {
     public function logoutAction()
     {
         // The security layer will intercept this request
+    }
+
+    /**
+     * @Route("/orders/", name="orders_catalog")
+     * @Template()
+     */
+    public function ordersAction()
+    {
+        $em = $this->get('doctrine')->getEntityManager();
+        $orders = $em->getRepository('TutorialBundle:Order')->findAll();
+        return array('orders' => $orders);
+    }
+
+    /**
+     * @Route("/orders/next/{id}", name="orders_next_stage", defaults={"_format"="json"})
+     *
+     */
+    public function orderNextStageAction($id)
+    {
+        $em = $this->get('doctrine')->getEntityManager();
+        $order = $em->find('TutorialBundle:Order', $id);
+        if ($order === null) {
+            return new Response('');
+        }
+
+        $order->setNextStageInDelivery();
+        $status = $order->getStatus();
+
+        $em->flush();
+
+        return new Response(\json_encode($status));
+    }
+
+    /**
+     * @Route("/orders/error/{id}", name="orders_error_stage", defaults={"_format"="json"})
+     *
+     */
+    public function orderErrorAction($id)
+    {
+        $em = $this->get('doctrine')->getEntityManager();
+        $order = $em->find('TutorialBundle:Order', $id);
+        if ($order === null) {
+            return new Response('');
+        }
+
+        $status = $order->getStatus();
+
+        if ($status != 'delivered') {
+            $order->setErrorInDelivery();
+            $status = $order->getStatus();
+
+            $em->flush();
+        }
+
+        return new Response(\json_encode($status));
     }
 
     /**

@@ -34,6 +34,8 @@ class AppKernel extends Kernel
 
     public function init()
     {
+        \bcscale(2);
+        
         if ($this->debug) {
             ini_set('display_errors', 1);
             error_reporting(-1);

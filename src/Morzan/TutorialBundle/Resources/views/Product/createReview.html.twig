@@ -1,0 +1,32 @@
+{% extends 'TutorialBundle::layout.html.twig' %}
+
+{% block body %}
+
+    <p>
+        Product: {{ product.name }}
+    </p>
+    <p>
+        Description: {{ product.description }}
+    </p>
+    <p>
+        Cost: {{ product.cost }}
+    </p>
+    <form action="{{ path('product_review', { 'id': product.id }) }}" method="post">
+        <div class="row">
+            {{ form_label(form.rating, 'Rating') }}:
+            {{ form_widget(form.rating) }}
+            {{ form_errors(form.rating) }}
+        </div>
+        <div class="row">
+            {{ form_label(form.review, 'Review') }}:
+            {{ form_widget(form.review) }}
+            {{ form_errors(form.review) }}
+        </div>
+        {{ form_rest(form) }}
+        <input type="submit" value="Create review" />
+        <input type="button" value="Cancel" onclick="location.href = '{{ path('product_view', {'id': product.id }) }}';" />
+    </form>
+
+
+
+{% endblock %}

@@ -17,7 +17,7 @@ class AdminUser extends BaseUser  {
     /**
      * @ORM\Column(type="string", unique=true)
      *
-     * @MyAssert\UniqueUsername(property="username", class="TutorialBundle:AdminUser")
+     * @MyAssert\UniqueUsername()
      *
      * @var string
      */

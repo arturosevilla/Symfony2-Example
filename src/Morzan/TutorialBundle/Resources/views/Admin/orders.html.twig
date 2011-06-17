@@ -1,0 +1,67 @@
+{% extends 'TutorialBundle::admin.html.twig' %}
+
+{% macro displayOrder(order) %}
+
+<div class="order-item">
+    <div class="order-item-id" style="display: none;">{{ order.id }}</div>
+    <div class="order-item-date">
+        {{ order.dateOfPurchase | date("m/d/Y") }}
+    </div>
+    <div class="order-item-status">
+        <span class="order-item-status-text">{{ order.status }}</span>
+        <a href="javascript:void(0)" onclick="return __reportStage(this, 'next');">Report next stage</a>
+        <a href="javascript:void(0)" onclick="return __reportStage(this, 'error');">Report error</a>
+    </div>
+    <div class="order-item-owner">
+        {{ order.user.firstName }} {{ order.user.lastName }}
+    </div>
+    <div class="order-item-items">
+        <ul>
+        {% for item in order.items %}
+            <li>{{ item.product.name }}: {{ item.quantity }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    <div class="order-item-total">
+        {{ order.subtotal }}<br />
+        {{ order.tax }}&nbsp;&nbsp;{{ order.taxPercentage }}%<br />
+        {{ order.total }}
+    </div>
+</div>
+
+{% endmacro %}
+
+{% block body %}
+
+<div id="orders">
+    {% for order in orders %}
+        {{ _self.displayOrder(order) }}
+    {% else %}
+        No orders yet :(
+    {% endfor %}
+</div>
+
+{% javascripts '@admin_js' filter='?closure' output='js/admin.js' %}
+
+    <script src="{{ asset_url }}"></script>
+
+{% endjavascripts %}
+
+    <script type="text/javascript">
+
+        $(function() {
+
+            $('div.order-item').each(function() {
+                var manager = new OrderManager(
+                    this,
+                    '{{ path('orders_next_stage', { 'id': '_id_'}) }}',
+                    '{{ path('orders_error_stage', { 'id': '_id_'}) }}'
+                );
+                this.orderManager = manager;
+            });
+
+        });
+
+    </script>
+
+{% endblock %}

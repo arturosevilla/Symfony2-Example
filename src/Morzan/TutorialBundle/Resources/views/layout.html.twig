@@ -2,6 +2,13 @@
 
 {% block navbar %}
 
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    <a href="{{ path('homeuser') }}">My orders</a> |
+    <a href="{{ path('_logout') }}">Log out</a>
+{% else %}
+    <a href="{{ path('_login') }}">Log in</a> |
+    <a href="{{ path('signup') }}">Sign up</a>
+{% endif %}
 
 {% endblock %}
 

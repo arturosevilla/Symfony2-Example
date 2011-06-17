@@ -5,6 +5,9 @@ parameters:
     tutorial.lastviewed.cookie.name: lastViewed
     # 2 years
     tutorial.lastviewed.cookie.expiretime: 63072000
+    tutorial.shopping_cart.factory.class: Morzan\TutorialBundle\Util\ShoppingCart\ShoppingCartManagerFactory
+    tutorial.shopping_cart.class: Morzan\TutorialBundle\Util\ShoppingCart\AbstractShoppingCartManager
+    tutorial.shopping_cart.anonymous.class: Morzan\TutorialBundle\Util\ShoppingCart\AnonymousShoppingCartManager
 
 services:
     tutorial.lastviewed:
@@ -23,4 +26,33 @@ services:
         class: %tutorial.cookie_variation_registry.class%
         public: false
         arguments: ["@event_dispatcher"]
+        
+    tuturial.shopping_cart.factory:
+        class: %tutorial.shopping_cart.factory.class%
+
+    tutorial.shopping_cart:
+        class: %tutorial.shopping_cart.class%
+        factory_service: tuturial.shopping_cart.factory
+        scope: request
+        factory_method: get
+        arguments:
+            - "@security.context"
+            - "@request"
+            - "@doctrine"
+            - "@tutorial.cookie_variation_registry"
+
+    tutorial.shopping_cart.anonymous:
+        class: %tutorial.shopping_cart.anonymous.class%
+        parent: tutorial.shopping_cart
+        scope: request
+        arguments:
+            - "@security.context"
+            - "@request"
+            - "@doctrine"
+            - "@tutorial.cookie_variation_registry"
+            - true
+
+
+
+
 

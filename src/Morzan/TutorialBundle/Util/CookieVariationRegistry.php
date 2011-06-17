@@ -39,6 +39,11 @@ class CookieVariationRegistry implements CookieVariationRegistryInterface {
         $this->registered = false;
     }
 
+    public function expireCookie($name)
+    {
+        $this->setCookie($name, '', -31536000); // -1 year
+    }
+
     public function setCookie($name, $value, $expire)
     {
         $this->registerMyself();

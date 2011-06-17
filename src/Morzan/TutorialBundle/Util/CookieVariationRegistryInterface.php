@@ -10,4 +10,6 @@ interface CookieVariationRegistryInterface {
 
     function setCookie($name, $value, $expire);
 
+    function expireCookie($name);
+
 }

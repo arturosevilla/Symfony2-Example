@@ -108,18 +108,44 @@ class DefaultController extends Controller
 
                 $this->encodePassword($user);
 
+                
+
                 // persist the user
                 $em = $this->get('doctrine')->getEntityManager();
                 $em->persist($user);
                 $em->flush();
 
                 $this->authenticate($user);
+                
+                // set our new shopping cart
+                $anonymous_cart = $this->get('tutorial.shopping_cart.anonymous');
+                $user_cart = $this->get('tutorial.shopping_cart');
+                $user_cart->addFromShoppingCart($anonymous_cart);
 
                 return $this->redirect($this->generateUrl('homeuser'));
             }
         }
 
         return array('form' => $form->createView());
+    }
+
+    /**
+     * @Route("/shopping_cart", name="shopping_cart")
+     * @Template()
+     */
+    public function shoppingCartAction()
+    {
+        $shopping_cart = $this->get('tutorial.shopping_cart')->getItems();
+        return array('cart' => $shopping_cart);
+    }
+
+    /**
+     * @Route("/shopping_cart/clear", name="shopping_cart_clear", requirements={"_method"="POST"})
+     */
+    public function clearShoppingCartAction()
+    {
+        $shopping_cart = $this->get('tutorial.shopping_cart')->clearItems();
+        return $this->redirect($this->generateUrl('homepage'));
     }
 
     private function encodePassword(BaseUser $user)
@@ -133,7 +159,6 @@ class DefaultController extends Controller
     private function authenticate(UserInterface $user)
     {
         $token = new UsernamePasswordToken($user, null, self::PROVIDER_KEY, $user->getRoles());
-
         $this->get('security.context')->setToken($token);
     }
 }

@@ -26,21 +26,24 @@ class UniqueUsernameValidator extends ConstraintValidator {
 
     public function isValid($value, Constraint $constraint)
     {
-        $repository = $this->em->getRepository($constraint->class);
+        $className = $this->context->getCurrentClass();
+        $property = $this->context->getCurrentProperty();
+
+        $repository = $this->em->getRepository($className);
         if ($repository === null) {
-            throw new \InvalidArgumentException(\sprintf('No repository for "%s" was found.', $constraint->class));
+            throw new \InvalidArgumentException(\sprintf('No repository for "%s" was found.', $className));
         }
         
-        $metadata = $this->em->getClassMetadata($constraint->class);
+        $metadata = $this->em->getClassMetadata($className);
 
-        if (!$metadata->hasField($constraint->property)) {
-            throw new \InvalidArgumentException(\sprintf('The metadata for "%s" does not contain the field "%s".', $constraint->class, $constraint->property));
+        if (!$metadata->hasField($property)) {
+            throw new \InvalidArgumentException(\sprintf('The metadata for "%s" does not contain the field "%s".', $className, $property));
         }
 
-        $users = $repository->findBy(array($constraint->property => $value));
+        $users = $repository->findBy(array($property => $value));
         $valid = \count($users) === 0;
         if (!$valid) {
-            $this->setMessage($constraint->message, array('{{ property }}' => $constraint->property));
+            $this->setMessage($constraint->message, array('{{ property }}' => $property));
         }
 
         return $valid;

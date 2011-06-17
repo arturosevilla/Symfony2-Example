@@ -22,8 +22,9 @@
             <br class="clear-mark" />
             <div id="searchbar">
                 <form action="" method="get">
-                    <input type="text" id="txtMainSearch" name="txtMainSearch" value="Search for products" class="search-bar" />
+                    <input type="text" id="txtMainSearch" name="txtMainSearch" placeholder="Search for products" class="search-bar" />
                     <input type="button" value="Search!" id="btnMainSearch" />
+                    <a href="{{ path('shopping_cart') }}">My shopping cart</a>
                 </form>
             </div>
             <div id="mainArea">
@@ -33,19 +34,6 @@
                 <a href="">About Us</a> | <a href="">Legal</a>
             </div>
         </div>
-        <script type="text/javascript" src="{{ asset('js/jquery.js') }}">
-        </script>
-        <script type="text/javascript">
-            $(function() {
-                $('#txtMainSearch').blur(function() {
-                    if (this.value == '') {
-                        this.value = 'Search for products';
-                    }
-                }).focus(function() {
-                    this.value = '';
-                });
-            });
-        </script>
         {% block js %}{% endblock %}
     </body>
 </html>

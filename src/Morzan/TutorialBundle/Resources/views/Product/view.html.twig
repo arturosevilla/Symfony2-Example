@@ -1,10 +1,46 @@
 {% extends 'TutorialBundle::layout.html.twig' %}
 
+{% macro showReview(review) %}
+
+<div class="product-review">
+    <div class="product-review-author">
+        {{ review.author.firstName }} {{ review.author.lastName }}
+    </div>
+    <div class="product-review-rating">
+        {{ review.rating }}
+    </div>
+    <div class="product-review-review">
+        {{ review.review }}
+    </div>
+</div>
+    
+
+{% endmacro %}
+
 {% block body %}
 
 <a href="{{ path('product_shopping_cart', { 'id': product.id }) }}">Add to shopping cart</a>
-{{ product.name }}
-{{ product.cost }}
-{{ product.description }}
+{% if canReview %}
+ | <a href="{{ path('product_review', { 'id': product.id }) }}">Add a review</a>
+{% endif %}
+ 
+<p>
+    {{ product.name }}<br />
+    {{ product.cost }}<br />
+    {{ product.description }}
+    {% if product.rating is not empty %}
+    <br />
+    Rating: {{ product.rating }}
+    {% endif %}
+</p>
 
+{% if product.rating is not empty %}
+    <hr />
+{% endif %}
+    
+<div id="reviews">
+    {% for review in product.reviews %}
+        {{ _self.showReview(review) }}
+    {% endfor %}
+</div>
 {% endblock %}

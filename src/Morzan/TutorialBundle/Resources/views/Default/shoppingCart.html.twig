@@ -1,0 +1,42 @@
+{% extends 'TutorialBundle::layout.html.twig' %}
+
+{% macro cartItem(item) %}
+<div class="shopping-cart-item">
+    <form action="" method="post">
+        <div class="shopping-cart-item-name">
+            {{ item.product.name }}
+        </div>
+        <div class="shopping-cart-item-quantity">
+            <input type="text" value="{{ item.quantity }}" id="Quantity{{ item.product.id }}" name="quantity" />
+            <input type="hidden" value="{{ item.product.id }}" id="ID{{ item.product.id }}" name="id" />
+        </div>
+    </form>
+</div>
+{% endmacro %}
+
+
+{% block body %}
+
+    {% if cart is not empty %}
+    <div id="buyCart">
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <form action="{{ path('shopping_cart_buy') }}" method="post">
+            <input type="submit" value="Buy!" onclick="return confirm('Are you sure?');" />
+        </form>
+        <form action="{{ path('shopping_cart_clear') }}" method="post">
+            <input type="submit" value="Clear my cart" onclick="return confirm('Are you sure?');" />
+        </form>
+        {% else %}
+        You need to login in order to buy your items.
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <div id="shoppingCart">
+    {% for item in cart %}
+        {{ _self.cartItem(item) }}
+    {% else %}
+        Empty shopping cart
+    {% endfor %}
+    </div>
+{% endblock %}

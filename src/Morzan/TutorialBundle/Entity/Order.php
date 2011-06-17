@@ -54,7 +54,7 @@ class Order extends BaseEntity {
     private $subtotal;
 
      /**
-     * @ORM\Column(type="decimal", precision=16, scale=2)
+     * @ORM\Column(type="decimal", precision=16, scale=4)
      *
      * @Assert\NotBlank()
      * @Assert\Type(type="numeric")
@@ -64,7 +64,7 @@ class Order extends BaseEntity {
     private $taxPercentage;
 
     /**
-     * @ORM\OneToMany(targetEntity="OrderItem", mappedBy="order")
+     * @ORM\OneToMany(targetEntity="OrderItem", mappedBy="order", cascade={"all"})
      *
      * @var Doctrine\Common\Collections\ArrayCollection
      */
@@ -79,11 +79,11 @@ class Order extends BaseEntity {
         $this->user = $pUser;
         $this->status = 'processed';
         $this->subtotal = '0';
-        $this->taxPercentage = $pTaxPercentage;
+        $this->taxPercentage = $psTaxPercentage;
         $this->items = new ArrayCollection();
         
         foreach ($paItems as $item) {
-            $this->addItem($paItems);
+            $this->addItem($item);
         }
     }
 
@@ -100,7 +100,7 @@ class Order extends BaseEntity {
 
     private function addOrderItem(OrderItem $item)
     {
-        if ($item->getOrder()->id !== $this->id) {
+        if ($item->getOrder()->getId() !== $this->getId()) {
             return;
         }
         
@@ -179,6 +179,11 @@ class Order extends BaseEntity {
     public function getTax()
     {
         return \bcmul($this->subtotal, $this->taxPercentage);
+    }
+
+    public function getItems()
+    {
+        return $this->items;
     }
 
 }

@@ -54,7 +54,7 @@ class Product extends BaseEntity {
     private $rating;
 
     /**
-     * @ORM\OneToMany(targetEntity="ProductReview", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="ProductReview", mappedBy="product", cascade={"all"})
      * 
      * @var Doctrine\Common\Collections\ArrayCollection
      */
@@ -141,6 +141,11 @@ class Product extends BaseEntity {
     public function setRating($pfRating)
     {
         $this->rating = $pfRating;
+    }
+
+    public function getReviews()
+    {
+        return $this->reviews;
     }
 
 }

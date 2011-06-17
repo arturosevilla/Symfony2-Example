@@ -1,9 +1,44 @@
 {% extends 'TutorialBundle::layout.html.twig' %}
 
+{% macro order(order) %}
+
+<div class="order-item">
+    <div class="order-item-date">
+        {{ order.dateOfPurchase | date("m/d/Y") }}
+    </div>
+    <div class="order-item-status">
+        {{ order.status }}
+    </div>
+    <div class="order-item-items">
+        <ul>
+        {% for item in order.items %}
+            <li>{{ item.product.name }}: {{ item.quantity }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    <div class="order-item-total">
+        {{ order.subtotal }}<br />
+        {{ order.tax }}&nbsp;&nbsp;{{ order.taxPercentage }}%<br />
+        {{ order.total }}
+    </div>
+</div>
+
+{% endmacro %}
+
 {% block body %}
 
 Hello, {{ user.firstName }} {{ user.lastName }}
 
 <a href="{{ path('_logout') }}">Logout</a>
+
+<div id="orders">
+
+    {% for order in orders %}
+        {{ _self.order(order) }}
+    {% else %}
+        Still, no orders :(
+    {% endfor %}
+
+</div>
 
 {% endblock %}

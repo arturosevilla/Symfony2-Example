@@ -9,7 +9,8 @@
     <body>
         <div id="logout"><a href="{{ path('admin_logout') }}">Logout</a></div>
         <div id="menu">
-            <a href="{{ path('product_catalog') }}">Product Catalog</a>
+            <a href="{{ path('product_catalog') }}">Product Catalog</a><br />
+            <a href="{{ path('orders_catalog') }}">Orders</a>
         </div>
         {% block body %}{% endblock %}
     </body>

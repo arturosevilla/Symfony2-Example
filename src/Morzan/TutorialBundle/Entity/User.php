@@ -15,14 +15,14 @@ use Morzan\TutorialBundle\Validator as MyAssert;
  *
  * @author arturo
  */
-class User extends BaseUser {
+class User extends BaseUser implements \Serializable {
 
     /**
      * @ORM\Column(type="string", unique=true)
      * 
      * @Assert\NotBlank()
      * @Assert\Email()
-     * @MyAssert\UniqueUsername(property="email", class="TutorialBundle:User")
+     * @MyAssert\UniqueUsername()
      *
      * @var string
      */
@@ -38,14 +38,14 @@ class User extends BaseUser {
     private $address;
 
     /**
-     * @ORM\OneToMany(targetEntity="Order", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="Order", mappedBy="user", cascade={"all"})
      *
      * @var Doctrine\Common\Collections\ArrayCollection
      */
     private $orders;
 
     /**
-     * @ORM\OneToMany(targetEntity="ShoppingCartItem", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="ShoppingCartItem", mappedBy="user", cascade={"all"})
      *
      * @var Doctrine\Common\Collections\ArrayCollection
      */
@@ -86,6 +86,11 @@ class User extends BaseUser {
         $order = new Order($this, $psTaxPercentage, $this->cartItems);
         $this->orders[] = $order;
 
+        $this->clearShoppingCart();
+    }
+
+    public function clearShoppingCart()
+    {
         $this->cartItems->clear();
     }
 
@@ -127,6 +132,16 @@ class User extends BaseUser {
     public function getUsername()
     {
         return $this->email;
+    }
+
+    public function serialize()
+    {
+        return serialize($this->email);
+    }
+    
+    public function unserialize($data)
+    {
+        $this->email = unserialize($data);
     }
 
 }
