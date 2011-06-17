@@ -9,11 +9,11 @@ security:
     providers:
         main:
             entity:
-                class:    Morzan\TutorialBundle\Entity\User
+                class:    Ckluster\TutorialBundle\Entity\User
                 property: email
         admin:
             entity:
-                class:    Morzan\TutorialBundle\Entity\AdminUser
+                class:    Ckluster\TutorialBundle\Entity\AdminUser
                 property: username
                 
     firewalls:

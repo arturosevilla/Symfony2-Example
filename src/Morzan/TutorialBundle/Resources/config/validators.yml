@@ -1,9 +1,0 @@
-parameters:
-    tutorialbundle.uniqueusername.class: Morzan\TutorialBundle\Validator\UniqueUsernameValidator
-
-services:
-    tutorialbundle.uniqueusername:
-        class: %tutorialbundle.uniqueusername.class%
-        arguments: ["@doctrine.orm.entity_manager"]
-        tags:
-            - { name: validator.constraint_validator, alias: tutorialbundle.validator.uniqueusername }
