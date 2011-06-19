@@ -120,11 +120,11 @@ class Process
         };
 
         // Workaround for http://bugs.php.net/bug.php?id=51800
-        if (strstr(PHP_OS, 'WIN')) {
+        //if (strstr(PHP_OS, 'WIN')) {
             $stderrPipeMode = 'a';
-        } else {
-            $stderrPipeMode = 'w';
-        }
+       // } else {
+         //   $stderrPipeMode = 'w';
+       // }
 
         $descriptors = array(array('pipe', 'r'), array('pipe', 'w'), array('pipe', $stderrPipeMode));
 

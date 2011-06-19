@@ -9,6 +9,7 @@ if (!in_array(@$_SERVER['REMOTE_ADDR'], array(
     header('HTTP/1.0 403 Forbidden');
     die('You are not allowed to access this file. Check '.basename(__FILE__).' for more information.');
 }
+umask(0000);
 
 require_once __DIR__.'/../app/bootstrap.php.cache';
 require_once __DIR__.'/../app/AppKernel.php';
