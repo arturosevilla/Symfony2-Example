@@ -20,7 +20,7 @@ class DefaultController extends Controller
     const PROVIDER_KEY = 'user_area';
 
     /**
-     * @Route("/", name="homepage")
+     * @Route("/{_locale}/", name="homepage", defaults={"_locale"="en"})
      * @Template()
      */
     public function indexAction()

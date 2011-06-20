@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Tutorial Store - {% block title %}Welcome{% endblock %}</title>
+        <title>Tutorial Store - {% block title %}{% trans from 'index' %}Welcome{% endtrans %}{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
     </head>
@@ -23,8 +23,8 @@
             <div id="searchbar">
                 <form action="" method="get">
                     <input type="text" id="txtMainSearch" name="txtMainSearch" placeholder="Search for products" class="search-bar" />
-                    <input type="button" value="Search!" id="btnMainSearch" />
-                    <a href="{{ path('shopping_cart') }}">My shopping cart</a>
+                    <input type="button" value="{% trans from "index" %}Search!{% endtrans %}" id="btnMainSearch" />
+                    <a href="{{ path('shopping_cart') }}">{% trans from "index" %}My shopping cart{% endtrans %}</a>
                 </form>
             </div>
             <div id="mainArea">
