@@ -1,0 +1,25 @@
+<htmL>
+    <head>
+        <title>Receipt - {{ order.id }}</title>
+    </head>
+    <body>
+        <h1>Order no. {{ order.id }}</h1>
+        <p>
+            Thank you {{ user.firstName }} {{ user.lastName }} for buying the following products:
+            <table>
+                {% for item in order.items %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.product.cost }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <p>
+                Subtotal: {{ order.subtotal }}<br />
+                Tax: {{ order.tax }} {{ order.taxPercentage }} %<br />
+                Total: {{ order.total }}
+            </p>
+        </p>
+    </body>
+</htmL>

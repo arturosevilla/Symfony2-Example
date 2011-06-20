@@ -19,7 +19,8 @@
     <div class="order-item-total">
         {{ order.subtotal }}<br />
         {{ order.tax }}&nbsp;&nbsp;{{ order.taxPercentage }}%<br />
-        {{ order.total }}
+        {{ order.total }}<br />
+        <a href="{{ path('receipt_view', {'id': order.id }) }}" target="_blank">View receipt</a>
     </div>
 </div>
 

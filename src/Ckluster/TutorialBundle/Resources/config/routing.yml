@@ -1,19 +1,24 @@
-_default:
+tutorial_default:
     resource: "@TutorialBundle/Controller/DefaultController.php"
     type:     annotation
     prefix:   /
 
-_product:
+tutorial_product:
     resource: "@TutorialBundle/Controller/ProductController.php"
     type:     annotation
     prefix:   /product
 
-_user:
+tutorial_user:
     resource: "@TutorialBundle/Controller/UserController.php"
     type:     annotation
     prefix:   /user
 
-_admin:
+tutorial_admin:
     resource: "@TutorialBundle/Controller/AdminController.php"
     type:     annotation
     prefix:   /admin
+
+tutorial_order:
+    resource: "@TutorialBundle/Controller/OrderController.php"
+    type:     annotation
+    prefix:   /order

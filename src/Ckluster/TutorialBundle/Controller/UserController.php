@@ -5,6 +5,8 @@ namespace Ckluster\TutorialBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Ckluster\TutorialBundle\Entity\User;
+use CKluster\TutorialBundle\Entity\Order;
 
 /**
  * UserController
@@ -57,11 +59,24 @@ class UserController extends Controller {
             return $this->redirect($this->generateUrl('homepage'));
         }
 
-        $user->buyShoppingCart('0.07');
+        $order = $user->buyShoppingCart('0.07');
 
         $em = $this->get('doctrine')->getEntityManager();
         $em->flush();
 
+        $this->sendEmailWithOrder($user, $order);
+
         return $this->redirect($this->generateUrl('homeuser'));
+    }
+
+    private function sendEmailWithOrder(User $user, Order $order)
+    {
+        $content = $this->renderView('TutorialBundle:Order:receipt.html.twig', array('user' => $user, 'order' => $order));
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Order no. '.$order->getId().' processed')
+            ->setFrom('example@server.com')
+            ->setTo($user->getEmail())
+            ->setBody($content, 'text/html');
+        $this->get('mailer')->send($message);
     }
 }

@@ -87,6 +87,7 @@ class User extends BaseUser implements \Serializable {
         $this->orders[] = $order;
 
         $this->clearShoppingCart();
+        return $order;
     }
 
     public function clearShoppingCart()
